@@ -13,9 +13,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
-  productList: undefined | Product[];
-  public products : any = [];
-  public cartCount: any = 0;
+  public products ?: Array<Product>
+
   length = 50;
   pageSize = 5;
   pageIndex = 0;
@@ -25,35 +24,32 @@ export class ProductsComponent {
   showPageSizeOptions = true;
   showFirstLastButtons = true;
   disabled = false;
-  public getTotalProductsCount!: number;
-  constructor(private _products:ProductsService){}
+
+
+  constructor(
+    private serviceProduct:ProductsService
+  ){}
 
   ngOnInit(){
-    this.products = this.listProducts()
-    this.length = this.products.length;
-  }
 
-  listProducts(){
-    this._products.showProducts().subscribe((result)=>{
-      if(result){
-        this.productList = result
-        console.log(result)
+    this.serviceProduct.fetchProducts().subscribe(products => {
+      this.serviceProduct.setProducts(products)
 
-        this.productList.forEach((n:any)=>{
-          Object.assign(n,{quantity:1, total:n.price})
-        })
-      }
+      this.products = this.serviceProduct.paginatedProducts()
+
+      this.length = this.serviceProduct.totalProductLength() || 50
     })
+   
   }
 
   handlePageEvent(e:PageEvent){
-    this.products = this._products.showProducts()
+    this.products = this.serviceProduct.paginatedProducts(e.pageIndex, 5)
   }
 
   addToCart(products:any){
-    this._products.addToCart(products);
-    this.cartCount = this._products.getCartItems()
-    this.getTotalProductsCount = this.cartCount.length
-    console.log(this._products.updateTotalProductsCount(this.getTotalProductsCount));
+    this.serviceProduct.addToCart(products);
+    // this.cartCount = this.serviceProduct.getCartItems()  
+    // this.getTotalProductsCount = this.cartCount.length
+    // console.log(this._products.updateTotalProductsCount(this.getTotalProductsCount));
   }
 }

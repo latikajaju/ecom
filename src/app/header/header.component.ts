@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CartService } from '../cart.service';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from '../products.service';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Injector } from '@angular/core';
+
 
 @Component({
   selector: 'app-header',
@@ -12,14 +15,18 @@ import { ProductsService } from '../products.service';
 })
 export class HeaderComponent {
   public totalProductsCount: number = 0;
-  constructor(private _productS: ProductsService){}
+  constructor(
+    private serviceProduct: ProductsService,
+  ){}
 
-  ngOnInit():void{
-    // this.cartService.getProducts().subscribe(res=>{
-    //   this.totalProducts = res.length;
-    // })
-    this._productS.totalProductsCount$.subscribe(count => {
-      this.totalProductsCount = count;
-    });
+  private injector = inject(Injector)
+
+  ngOnInit():void {
+
+    toObservable(this.serviceProduct.getCartCount(), { injector: this.injector }).subscribe(
+      (count) => {
+        this.totalProductsCount = count;
+      }
+    )
   }
 }

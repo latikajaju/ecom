@@ -1,29 +1,30 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4" *ngFor="let products of productList">
+        <div class="col-md-4" *ngFor="let product of products">
             <div class="card mb-3 p-3" style="max-width: 540px;">
             <div class="row g-0">
               <div class="col-md-6">
-                <img src="{{products.image}}" class="img-fluid rounded-start" alt="...">
+                <img src="{{product?.image}}" class="img-fluid rounded-start" alt="...">
               </div>
               <div class="col-md-6">
                 <div class="card-body">
-                  <h5 class="card-title">{{products.title}}</h5>
-                  <p class="card-text">{{products.price}}</p>
+                  <h5 class="card-title">{{product?.title}}</h5>
+                  <p class="card-text">{{product?.price}}</p>
                 </div>
               </div>
             </div>
             <div class="row g-0">
                 <div class="col-md-8">
-                    <p class="card-text">{{products.description | slice:0:100}}<span *ngIf="products.description.length >= 100">...</span></p>
+                    <p class="card-text">{{product?.description | slice:0:100}}</p>
                 </div>
                 <div class="col-md-4 btnAlignCenter">
-                    <a class="btn btn-primary" (click)="addToCart(products)">Add to cart</a>
+                    <a class="btn btn-primary" (click)="addToCart(product)">Add to cart</a>
                 </div>
               </div>
             </div>
         </div>
     </div>  
+    {{length}}
     <div class="row">
         <mat-paginator #paginator
                class="demo-paginator"

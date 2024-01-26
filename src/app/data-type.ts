@@ -5,3 +5,8 @@ export interface Product{
     description: string,
     id: number
 }
+
+export interface CartItem {
+    product: Product,
+    qty : number
+}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { Product } from '../data-type';
+import { CartItem, Product } from '../data-type';
 import { ProductsService } from '../products.service';
 
 @Component({
@@ -11,26 +11,26 @@ import { ProductsService } from '../products.service';
   styleUrl: './cart.component.scss'
 })
 export class CartComponent {
-  cart ?: Array<Product>
-  public finalTotal  !: number;
-  public getTotalProductsCount: number =0;
-  constructor(private _productS:ProductsService) { }
+  cart ?: Array<CartItem>
+  finalTotal  ?: number;
+
+  constructor(private serviceProduct:ProductsService) { }
 
   ngOnInit():void{
-    this.cart = this._productS.getCartItems()
-    this.getTotalProductsCount = this.cart.length;
-    this._productS.updateTotalProductsCount(this.getTotalProductsCount);
+    this.cart = this.serviceProduct.getCartItems()
   }
 
   getTotal(){
-    return this.cart?.reduce((total, product) => total + product.price, 0);
+    return this.cart?.reduce((total, product) => total + product.product.price, 0);
   }
 
   removeProduct(item:any){
-    this._productS.removeItem(item)
-    this.cart = this._productS.getCartItems()
-    this._productS.updateTotalProductsCount(this.getTotalProductsCount);
-    console.log("testing")
+    this.serviceProduct.removeItem(item)
+    this.cart = this.serviceProduct.getCartItems()
+  }
+
+  incQty(item : CartItem) {
+    item.qty = item.qty + 1
   }
 
 } 
