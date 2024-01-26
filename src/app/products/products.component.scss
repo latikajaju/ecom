@@ -1,0 +1,20 @@
+.flexCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    image{
+        min-width: 100px;
+        width: 33.3333%;
+        max-width: 308px; 
+        display: inline-block;
+    }
+    .card-text{
+        text-align: justify;
+        padding-right: 11px;
+    }
+    .btnAlignCenter{
+        @extend .flexCenter
+    }
+}

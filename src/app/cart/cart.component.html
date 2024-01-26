@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <h1>Cart is Empty!</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4" *ngFor="let item of cart; let i = index">
+            <div class="card mb-3 p-3" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-6">
+                <img src="{{item.image}}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.title}}</h5>
+                  <p class="card-text">{{item.price}}</p>
+                  <p class="card-text">{{ getTotalProductsCount }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-md-4 btnAlignCenter">
+                    <a class="btn btn-primary" (click)="removeProduct(item)">Remove</a>
+                </div>
+                <div class="col-md-4 btnAlignCenter">
+                    <a class="btn btn-primary">Quantity</a>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>    
+</div>

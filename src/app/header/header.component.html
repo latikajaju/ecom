@@ -1,0 +1,18 @@
+<header>
+    <div class="navbar navbar-dark bg-primary shadow-sm">
+        <div class="navbar-brand align-item-center d-flex">
+            <i style="font-size: 40px;" class="fas fa-shipping-fast">&nbsp;
+                
+            </i>
+            <strong style="font-size: 30px;">ShoppingCart</strong>
+  
+        </div>
+        <div>  
+        <a class="btn btn-primary" routerLink="/products">Products</a>
+        <button routerLink="/cart" class="btn btn-primary">
+            Checkout
+            <div style="font-size: 10px;" class="badge bg-danger">{{totalProductsCount}}</div>
+        </button>
+        </div>
+    </div>
+  </header>
