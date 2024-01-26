@@ -20,8 +20,8 @@ export class CartComponent {
     this.cart = this.serviceProduct.getCartItems()
   }
 
-  getTotal(){
-    return this.cart?.reduce((total, product) => total + product.product.price, 0);
+  cartTotal(){
+    return this.cart?.reduce((total, item) => total + (item.product.price * item.qty), 0);
   }
 
   removeProduct(item:any){
@@ -31,6 +31,7 @@ export class CartComponent {
 
   incQty(item : CartItem) {
     item.qty = item.qty + 1
+    this.serviceProduct.setCartQty()
   }
 
 } 

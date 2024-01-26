@@ -13,9 +13,7 @@ export class ProductsService {
   private products?: Array<Product>
   private count = signal(0);
 
-  constructor(private http: HttpClient) {
-   
-  }
+  constructor(private http: HttpClient) { }
 
   fetchProducts() : Observable<Array<Product>> {
     return this.http.get<Product[]>("https://fakestoreapi.com/products")
@@ -31,7 +29,7 @@ export class ProductsService {
 
   paginatedProducts(pageNumber: number = 1, itemsPerPage: number = 5) : Array<Product> | undefined {
     
-    const startIndex = (pageNumber - 1) * itemsPerPage;
+    const startIndex = ((pageNumber <= 1 ? 1 : 2) - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
     const productsOnPage = this.products?.slice(startIndex, endIndex)
@@ -42,11 +40,15 @@ export class ProductsService {
   addToCart(product: Product){
     if(!this.cart.some(itm => itm.product.id == product.id)) {
       this.cart.push( { product, qty: 1 })
-      this.count.set(this.cart.length)
+      this.setCartQty()
     }
     console.log(this.count())
   }
   
+  setCartQty() {
+    this.count.set(this.cart?.reduce((total, item) => total + item.qty, 0))
+  }
+
   getCartItems(){
     return this.cart
   }
