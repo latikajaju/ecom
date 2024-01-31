@@ -48,9 +48,13 @@ export class ProductsService {
   }
 
   addToCart(product: Product){
+
     if(!this.cart.some(itm => itm.product.id == product.id)) {
       this.cart.push( { product, qty: 1 })
       this.setCartQty()
+    } else {
+      const index = this.cart.findIndex(itm => itm.product.id == product.id)
+      this.cart[index].qty +=1
     }
     console.log(this.count())
   }
