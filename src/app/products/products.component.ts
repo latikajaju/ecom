@@ -28,17 +28,22 @@ export class ProductsComponent {
 
   constructor(
     private serviceProduct:ProductsService
-  ){}
+  ){
+
+  }
 
   ngOnInit(){
 
-    this.serviceProduct.fetchProducts().subscribe(products => {
-      this.serviceProduct.setProducts(products)
+    // this.serviceProduct.fetchProducts().subscribe(products => {
+    //   // this.serviceProduct.setProducts(products)
+    //   this.products = this.serviceProduct.paginatedProducts()
+    //   this.length = this.serviceProduct.totalProductLength() || 50
+    // })
 
+    this.serviceProduct.getProductSubject().subscribe( products => {
       this.products = this.serviceProduct.paginatedProducts()
-
       this.length = this.serviceProduct.totalProductLength() || 50
-    })
+    } )
    
   }
 

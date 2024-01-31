@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CartItem, Product } from './data-type';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { signal } from '@angular/core';
 
 @Injectable({
@@ -12,16 +11,27 @@ export class ProductsService {
   private cart : Array<CartItem> = new Array()
   private products?: Array<Product>
   private count = signal(0);
+  private readonly productsSubject: BehaviorSubject<Array<Product> | undefined> = new BehaviorSubject<Array<Product> | undefined>(undefined);
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) { 
+    this.fetchProducts().subscribe( products => {
+      this.products = products
+      this.productsSubject.next(products)
+    } )
+  }
+
+  getProductSubject() {
+    return this.productsSubject
+  }
 
   fetchProducts() : Observable<Array<Product>> {
     return this.http.get<Product[]>("https://fakestoreapi.com/products")
   }
 
-  setProducts(products : Array<Product>) {
-    this.products = products
-  }
+  // setProducts(products : Array<Product>) {
+  //   this.products = products
+  // }
 
   totalProductLength() {
     return this.products?.length
