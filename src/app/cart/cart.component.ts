@@ -24,14 +24,21 @@ export class CartComponent {
     return this.cart?.reduce((total, item) => total + (item.product.price * item.qty), 0);
   }
 
-  removeProduct(item:any){
-    this.serviceProduct.removeItem(item)
+  removeProduct(item: CartItem){
+    this.serviceProduct.removeItem(item.product)
     this.cart = this.serviceProduct.getCartItems()
   }
 
   incQty(item : CartItem) {
     item.qty = item.qty + 1
-    this.serviceProduct.setCartQty()
+    this.serviceProduct.setCartQty(1)
+  }
+
+  decQty(item : CartItem) {
+
+    if(item.qty == 0) this.removeProduct(item)
+    item.qty = item.qty - 1
+    this.serviceProduct.setCartQty(0)
   }
 
 } 

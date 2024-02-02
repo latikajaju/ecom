@@ -59,8 +59,11 @@ export class ProductsService {
     console.log(this.count())
   }
   
-  setCartQty() {
-    this.count.set(this.cart?.reduce((total, item) => total + item.qty, 0))
+  setCartQty(op: number = 1) {
+    if(op)
+      this.count.set(this.cart?.reduce((total, item) => total + item.qty, 0))
+    else
+      this.count.set(this.cart?.reduce((total, item) => total - item.qty, 0))
   }
 
   getCartItems(){
