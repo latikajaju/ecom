@@ -25,7 +25,6 @@ export class ProductsComponent {
   showFirstLastButtons = true;
   disabled = false;
 
-
   constructor(
     private serviceProduct:ProductsService
   ){
@@ -48,13 +47,15 @@ export class ProductsComponent {
   }
 
   handlePageEvent(e:PageEvent){
+    console.log(e.pageIndex)
     this.products = this.serviceProduct.paginatedProducts(e.pageIndex, 5)
   }
 
-  addToCart(products:any){
-    this.serviceProduct.addToCart(products);
-    // this.cartCount = this.serviceProduct.getCartItems()  
-    // this.getTotalProductsCount = this.cartCount.length
-    // console.log(this._products.updateTotalProductsCount(this.getTotalProductsCount));
+  addToCart(product: Product){
+    this.serviceProduct.addToCart(product);
+  }
+
+  checkProdAdded(prod : Product) {
+    return  this.serviceProduct.isProductAdded(prod)
   }
 }

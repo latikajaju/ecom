@@ -37,9 +37,9 @@ export class ProductsService {
     return this.products?.length
   }
 
-  paginatedProducts(pageNumber: number = 1, itemsPerPage: number = 5) : Array<Product> | undefined {
+  paginatedProducts(pageNumber: number = 0, itemsPerPage: number = 5) : Array<Product> | undefined {
     
-    const startIndex = ((pageNumber <= 1 ? 1 : 2) - 1) * itemsPerPage;
+    const startIndex = (pageNumber) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
     const productsOnPage = this.products?.slice(startIndex, endIndex)
@@ -59,11 +59,8 @@ export class ProductsService {
     console.log(this.count())
   }
   
-  setCartQty(op: number = 1) {
-    if(op)
+  setCartQty() {
       this.count.set(this.cart?.reduce((total, item) => total + item.qty, 0))
-    else
-      this.count.set(this.cart?.reduce((total, item) => total - item.qty, 0))
   }
 
   getCartItems(){
@@ -77,5 +74,10 @@ export class ProductsService {
 
   getCartCount() {
     return this.count
+  }
+
+
+  isProductAdded(product: Product) {
+    return this.cart?.some(itm => itm.product.id == product.id)
   }
 }

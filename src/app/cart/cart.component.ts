@@ -31,15 +31,16 @@ export class CartComponent {
 
   incQty(item : CartItem) {
     item.qty = item.qty + 1
-    this.serviceProduct.setCartQty(1)
+    this.serviceProduct.setCartQty()
   }
 
   decQty(item : CartItem) {
 
     if(item.qty == 0) this.removeProduct(item)
     item.qty = item.qty - 1
-    this.serviceProduct.setCartQty(0)
+    this.serviceProduct.setCartQty()
   }
+
 
 } 
 
