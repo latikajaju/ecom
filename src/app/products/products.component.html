@@ -20,8 +20,9 @@
 
           @if(checkProdAdded(product)) {
           <div class="col-md-4 btnAlignCenter">
-            <a class="btn btn-primary" (click)="addToCart(product)">+</a>
-            <a class="btn btn-primary" (click)="addToCart(product)">-</a>
+            <a class="btn btn-primary" (click)="incQty(product)">+</a>
+            {{getProductQuantity(product)}}
+            <a class="btn btn-primary" (click)="decQty(product)">-</a>
           </div>
           } @else {
           <div class="col-md-4 btnAlignCenter">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { ProductsService } from '../products.service';
 import { Router, RouterModule } from '@angular/router';
 import { Product } from '../data-type';
@@ -28,22 +28,11 @@ export class ProductsComponent {
   constructor(
     private serviceProduct:ProductsService
   ){
-
-  }
-
-  ngOnInit(){
-
-    // this.serviceProduct.fetchProducts().subscribe(products => {
-    //   // this.serviceProduct.setProducts(products)
-    //   this.products = this.serviceProduct.paginatedProducts()
-    //   this.length = this.serviceProduct.totalProductLength() || 50
-    // })
-
-    this.serviceProduct.getProductSubject().subscribe( products => {
+    effect( () =>{
+      this.products = this.serviceProduct.getProductSignal()
       this.products = this.serviceProduct.paginatedProducts()
       this.length = this.serviceProduct.totalProductLength() || 50
     } )
-   
   }
 
   handlePageEvent(e:PageEvent){
@@ -58,4 +47,19 @@ export class ProductsComponent {
   checkProdAdded(prod : Product) {
     return  this.serviceProduct.isProductAdded(prod)
   }
+
+  incQty(product : Product) {
+    const item = this.serviceProduct.getCartItemFromProduct(product)
+    this.serviceProduct.incQty(item!!)
+  }
+
+  decQty(product : Product) {
+    const item = this.serviceProduct.getCartItemFromProduct(product)
+    this.serviceProduct.decQty(item!!)
+  }
+
+  getProductQuantity(product: Product) {
+    return this.serviceProduct.getCartItemFromProduct(product)?.qty
+  }
+
 }

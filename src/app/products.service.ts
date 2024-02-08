@@ -11,27 +11,18 @@ export class ProductsService {
   private cart : Array<CartItem> = new Array()
   private products?: Array<Product>
   private count = signal(0);
-  private readonly productsSubject: BehaviorSubject<Array<Product> | undefined> = new BehaviorSubject<Array<Product> | undefined>(undefined);
-
+  private productsSignal = signal<Product[]|undefined>(undefined)
 
   constructor(private http: HttpClient) { 
     this.fetchProducts().subscribe( products => {
-      this.products = products
-      this.productsSubject.next(products)
+      this.productsSignal.set(products)
+      this.products = this.productsSignal()
     } )
-  }
-
-  getProductSubject() {
-    return this.productsSubject
   }
 
   fetchProducts() : Observable<Array<Product>> {
     return this.http.get<Product[]>("https://fakestoreapi.com/products")
   }
-
-  // setProducts(products : Array<Product>) {
-  //   this.products = products
-  // }
 
   totalProductLength() {
     return this.products?.length
@@ -49,14 +40,13 @@ export class ProductsService {
 
   addToCart(product: Product){
 
-    if(!this.cart.some(itm => itm.product.id == product.id)) {
+    if(!this.isProductAdded(product)) {
       this.cart.push( { product, qty: 1 })
       this.setCartQty()
     } else {
       const index = this.cart.findIndex(itm => itm.product.id == product.id)
       this.cart[index].qty +=1
     }
-    console.log(this.count())
   }
   
   setCartQty() {
@@ -72,12 +62,34 @@ export class ProductsService {
     this.count.set(this.cart.length)
   }
 
-  getCartCount() {
-    return this.count
+  getCartCount() { 
+    return this.count()
   }
-
 
   isProductAdded(product: Product) {
     return this.cart?.some(itm => itm.product.id == product.id)
+  }
+
+  cartTotal(){
+    return this.getCartItems()?.reduce((total, item) => total + (item.product.price * item.qty), 0);
+  }
+
+  incQty(item : CartItem) {
+    item.qty = item.qty + 1
+    this.setCartQty()
+  }
+
+  decQty(item : CartItem) {
+    item.qty = item.qty - 1
+    if(item.qty <= 0) this.removeItem(item.product)
+    this.setCartQty()
+  }
+
+  getCartItemFromProduct(product: Product) {
+    return this.cart.find( item => item.product.id == product.id )
+  }
+
+  getProductSignal() {
+    return this.productsSignal()
   }
 }

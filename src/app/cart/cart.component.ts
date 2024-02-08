@@ -21,7 +21,7 @@ export class CartComponent {
   }
 
   cartTotal(){
-    return this.cart?.reduce((total, item) => total + (item.product.price * item.qty), 0);
+    return this.serviceProduct.cartTotal()
   }
 
   removeProduct(item: CartItem){
@@ -35,12 +35,9 @@ export class CartComponent {
   }
 
   decQty(item : CartItem) {
-
-    if(item.qty == 0) this.removeProduct(item)
     item.qty = item.qty - 1
+    if(item.qty <= 0) this.removeProduct(item)
     this.serviceProduct.setCartQty()
   }
-
-
 } 
 
